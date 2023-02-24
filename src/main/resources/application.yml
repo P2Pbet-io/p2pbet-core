@@ -1,0 +1,76 @@
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+
+logging:
+  level:
+    root: info
+
+management:
+  info:
+    git:
+      mode: simple
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: "health,info,prometheus"
+
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: p2pbet-core-v2
+  jackson:
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: false
+  datasource:
+    driverClassName: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-test-query: select 1
+      maximum-pool-size: 10
+  liquibase:
+    change-log: classpath:liquibase/changelog.yml
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+            instanceName: ${spring.application.name}
+          jobStore:
+            useProperties: true
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+            misfireThreshold: 5000
+            maxMisfiresToHandleAtATime: 1
+            isClustered: true
+            dataSource: quartzDataSource
+          dataSource:
+            quartzDataSource:
+              driver: ${spring.datasource.driverClassName}
+              provider: hikaricp
+              URL: ${spring.datasource.url}
+              user: ${spring.datasource.username}
+              password: ${spring.datasource.password}
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 20
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+external-service:
+  finnhub:
+    url: https://finnhub.io
+    request-log-level: URL_BODY
+    response-log-level: STATUS_BODY
+    apiKey: "apiKey"

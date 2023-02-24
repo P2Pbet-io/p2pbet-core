@@ -1,0 +1,48 @@
+server:
+  port: 8084
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: user
+    password: password
+  datasource:
+    url: jdbc:postgresql://url:port/core-update
+    username: core
+    password: password
+
+external-service:
+  blockchain-integration:
+    bsc:
+      url: http://localhost:8082
+      request-log-level: URL_BODY
+      response-log-level: STATUS_BODY
+    avalanche:
+      url: http://localhost:8082
+      request-log-level: URL_BODY
+      response-log-level: STATUS_BODY
+    polygon:
+      url: http://localhost:8083
+      request-log-level: URL_BODY
+      response-log-level: STATUS_BODY
+    tron:
+      url: http://localhost:8084
+      request-log-level: URL_BODY
+      response-log-level: STATUS_BODY
+  free-auction:
+    url: http://localhost:8085
+    request-log-level: URL_BODY
+    response-log-level: STATUS_BODY
+  finnhub:
+    url: https://finnhub.io
+    request-log-level: URL_BODY
+    response-log-level: STATUS_BODY
+    apiKey: "apiKey"
+
+keycloak:
+  server-url: https://keycloak
+  issuer-url: https://keycloak/realms/p2pbet
+  username: username
+  password: password
+  realm: p2pbet
+  client: client
+  secret: secret
